@@ -1,39 +1,13 @@
-
-import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
-import 'dart:isolate';
 
-import 'dart_md4c_bindings_generated.dart';
+// Unused right now
+// import 'dart:async';
+// import 'dart:isolate';
 
-/// A very short-lived native function.
-///
-/// For very short-lived functions, it is fine to call them on the main isolate.
-/// They will block the Dart execution while running the native function, so
-/// only do this for native functions which are guaranteed to be short-lived.
-int sum(int a, int b) => _bindings.sum(a, b);
+import 'dart_md4c_bindings.dart';
 
-/// A longer lived native function, which occupies the thread calling it.
-///
-/// Do not call these kind of native functions in the main isolate. They will
-/// block Dart execution. This will cause dropped frames in Flutter applications.
-/// Instead, call these native functions on a separate isolate.
-///
-/// Modify this to suit your own use case. Example use cases:
-///
-/// 1. Reuse a single isolate for various different kinds of requests.
-/// 2. Use multiple helper isolates for parallel execution.
-Future<int> sumAsync(int a, int b) async {
-  final SendPort helperIsolateSendPort = await _helperIsolateSendPort;
-  final int requestId = _nextSumRequestId++;
-  final _SumRequest request = _SumRequest(requestId, a, b);
-  final Completer<int> completer = Completer<int>();
-  _sumRequests[requestId] = completer;
-  helperIsolateSendPort.send(request);
-  return completer.future;
-}
-
-const String _libName = 'dart_md4c';
+const String _libName = 'md4c';
 
 /// The dynamic library in which the symbols for [DartMd4cBindings] can be found.
 final DynamicLibrary _dylib = () {
@@ -52,6 +26,8 @@ final DynamicLibrary _dylib = () {
 /// The bindings to the native functions in [_dylib].
 final DartMd4cBindings _bindings = DartMd4cBindings(_dylib);
 
+/*
+Note: Keeping this for later reference.
 
 /// A request to compute `sum`.
 ///
@@ -129,3 +105,4 @@ Future<SendPort> _helperIsolateSendPort = () async {
   // can start sending requests.
   return completer.future;
 }();
+*/
