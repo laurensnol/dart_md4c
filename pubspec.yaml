@@ -1,5 +1,5 @@
 name: dart_md4c
-description: A new Flutter FFI plugin project.
+description: Dart bindings for MD4C.
 version: 0.0.1
 homepage:
 
