@@ -9,10 +9,14 @@ import 'dart_md4c_bindings.dart';
 
 const String _libName = 'md4c';
 
+// Since the Pod will result in one Framework containing md4c and md4c-html,
+// the name will be the same in both bindings.
+const String _libNameMacOS = 'dart_md4c';
+
 /// The dynamic library in which the symbols for [DartMd4cBindings] can be found.
 final DynamicLibrary _dylib = () {
   if (Platform.isMacOS || Platform.isIOS) {
-    return DynamicLibrary.open('$_libName.framework/$_libName');
+    return DynamicLibrary.open('$_libNameMacOS.framework/$_libNameMacOS');
   }
   if (Platform.isAndroid || Platform.isLinux) {
     return DynamicLibrary.open('lib$_libName.so');
