@@ -20,7 +20,9 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 if(WIN32)
     # On Windows, given there is no standard lib install dir etc., we rather
     # by default build static lib.
-    option(BUILD_SHARED_LIBS "help string describing option" OFF)
+    
+    # Note: Disabled for now, since it appears that Flutter requires shared libs.
+    # option(BUILD_SHARED_LIBS "help string describing option" OFF)
 else()
     # On Linux, MD4C is slowly being adding into some distros which prefer
     # shared lib.
