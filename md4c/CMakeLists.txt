@@ -66,7 +66,7 @@ include(GNUInstallDirs)
 # Build rules for MD4C parser library
 
 configure_file(md4c.pc.in md4c.pc @ONLY)
-add_library(md4c md4c.c md4c.h)
+add_library(md4c md4c.c md4c.h md4c-utils.c md4c-utils.h)
 if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(md4c PRIVATE -Wall -Wextra)
 endif()
