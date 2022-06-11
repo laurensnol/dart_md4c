@@ -1,23 +1,24 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
-import 'dart:ffi' as ffi;
-import 'package:ffi/ffi.dart' as pffi;
+import 'dart:ffi';
+import 'package:ffi/ffi.dart';
 
-import 'dart_md4c_bindings.dart' show MD_CHAR, MD_SIZE;
+import 'dart_md4c_bindings.dart' show MD_SIZE;
 
+/// Bindings for `md4c-html.h`.
 class DartMd4cHtmlBindings {
   /// Holds the symbol lookup function.
-  final ffi.Pointer<T> Function<T extends ffi.NativeType>(
+  final Pointer<T> Function<T extends NativeType>(
     String symbolName,
   ) _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
-  DartMd4cHtmlBindings(ffi.DynamicLibrary dynamicLibrary)
+  DartMd4cHtmlBindings(DynamicLibrary dynamicLibrary)
       : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
   DartMd4cHtmlBindings.fromLookup(
-    ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
+    Pointer<T> Function<T extends NativeType>(String symbolName) lookup,
   ) : _lookup = lookup;
 
   /// Render Markdown into HTML.
@@ -36,14 +37,17 @@ class DartMd4cHtmlBindings {
   /// Returns -1 on error (if `md_parse()` fails.)
   /// Returns 0 on success.
   int md_html(
-    ffi.Pointer<pffi.Utf8> input,
+    Pointer<Utf8> input,
     int input_size,
-    ffi.Pointer<
-            ffi.NativeFunction<
-                ffi.Void Function(
-                    ffi.Pointer<pffi.Utf8>, MD_SIZE, ffi.Pointer<ffi.Void>)>>
+    Pointer<
+            NativeFunction<
+                Void Function(
+      Pointer<Utf8>,
+      MD_SIZE,
+      Pointer<Void>,
+    )>>
         process_output,
-    ffi.Pointer<ffi.Void> userdata,
+    Pointer<Void> userdata,
     int parser_flags,
     int renderer_flags,
   ) {
@@ -58,29 +62,37 @@ class DartMd4cHtmlBindings {
   }
 
   late final _md_htmlPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(
-              ffi.Pointer<pffi.Utf8>,
-              MD_SIZE,
-              ffi.Pointer<
-                  ffi.NativeFunction<
-                      ffi.Void Function(ffi.Pointer<pffi.Utf8>, MD_SIZE,
-                          ffi.Pointer<ffi.Void>)>>,
-              ffi.Pointer<ffi.Void>,
-              ffi.Uint32,
-              ffi.Uint32)>>('md_html');
+      NativeFunction<
+          Int32 Function(
+    Pointer<Utf8>,
+    MD_SIZE,
+    Pointer<
+        NativeFunction<
+            Void Function(
+      Pointer<Utf8>,
+      MD_SIZE,
+      Pointer<Void>,
+    )>>,
+    Pointer<Void>,
+    Uint32,
+    Uint32,
+  )>>('md_html');
 
   late final _md_html = _md_htmlPtr.asFunction<
       int Function(
-          ffi.Pointer<pffi.Utf8>,
-          int,
-          ffi.Pointer<
-              ffi.NativeFunction<
-                  ffi.Void Function(
-                      ffi.Pointer<pffi.Utf8>, MD_SIZE, ffi.Pointer<ffi.Void>)>>,
-          ffi.Pointer<ffi.Void>,
-          int,
-          int)>();
+    Pointer<Utf8>,
+    int,
+    Pointer<
+        NativeFunction<
+            Void Function(
+      Pointer<Utf8>,
+      MD_SIZE,
+      Pointer<Void>,
+    )>>,
+    Pointer<Void>,
+    int,
+    int,
+  )>();
 }
 
 /// If set, debug output from md_parse() is sent to stderr.
