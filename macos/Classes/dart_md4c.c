@@ -3,3 +3,4 @@
 #include "../../md4c/entity.c"
 #include "../../md4c/md4c.c"
 #include "../../md4c/md4c-html.c"
+#include "../../md4c/md4c-utils.c"
